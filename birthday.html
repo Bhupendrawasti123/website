@@ -266,23 +266,19 @@
         .theme-forest-btn { background: linear-gradient(135deg, #2e8b57, #3cb371); }
         .theme-royal-btn { background: linear-gradient(135deg, #6a5acd, #9370db); }
 
-        /* Theme Background Icon */
-       .theme-bg {
+        /* Theme Background Icon - Horizontal Left Alignment */
+        .theme-bg {
             position: fixed;
-            left: 10px;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
             opacity: 0.1;
             z-index: -1;
             font-size: 150px;
-            line-height: 1;
+            white-space: nowrap;
             animation: float 6s ease-in-out infinite;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
+            color: var(--primary);
         }
-
 
         /* Animations */
         @keyframes fadeIn {
@@ -491,20 +487,29 @@
             themeIcon.textContent = randomWish.icon;
             themeIcon.className = 'theme-icon ' + randomWish.animation;
             
-            // Update theme background with vertical text
+            // Update theme background with horizontal positioning
             const themeBg = document.getElementById('themeBg');
             themeBg.textContent = randomWish.bgIcon;
-            themeBg.style.writingMode = 'vertical-rl';
-            themeBg.style.textOrientation = 'mixed';
+            themeBg.style.cssText = `
+                position: fixed;
+                left: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                opacity: 0.1;
+                z-index: -1;
+                font-size: 150px;
+                white-space: nowrap;
+                animation: float 6s ease-in-out infinite;
+                color: var(--primary);
+            `;
         }
-
 
         // Change color theme
         function changeTheme(theme) {
             document.body.className = theme;
             // Update URL without reload
             const newUrl = new URL(window.location.href);
-            newUrl.searchParams.set('theme', theme);
+            newUrl.searchParams.set('            newUrl.searchParams.set('theme', theme);
             window.history.pushState({}, '', newUrl);
         }
 
@@ -518,44 +523,46 @@
         });
 
         // Close info modal when clicking outside
-        window.addEventListener('click', function(event) {        if (event.target == document.getElementById('infoModal')) {
-            document.getElementById('infoModal').style.display = 'none';
-        }
-    });
+        window.addEventListener('click', function(event) {
+            if (event.target == document.getElementById('infoModal')) {
+                document.getElementById('infoModal').style.display = 'none';
+            }
+        });
 
-    // Create confetti
-    function createConfetti() {
-        const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', '#ff9ff3', '#a29bfe'];
-        
-        for (let i = 0; i < 20; i++) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            confetti.style.animationDelay = (Math.random() * 2) + 's';
-            document.body.appendChild(confetti);
+        // Create confetti
+        function createConfetti() {
+            const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', '#ff9ff3', '#a29bfe'];
             
-            setTimeout(() => {
-                confetti.remove();
-            }, 5000);
+            for (let i = 0; i < 20; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = (Math.random() * 2) + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
         }
-    }
 
-    // Initial setup
-    getRandomWish();
-    
-    // Create confetti on load and every 3 seconds
-    window.onload = function() {
-        createConfetti();
-        setInterval(createConfetti, 3000);
-    };
+        // Initial setup
+        getRandomWish();
+        
+        // Create confetti on load and every 3 seconds
+        window.onload = function() {
+            createConfetti();
+            setInterval(createConfetti, 3000);
+        };
 
-    // Add keyboard controls
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') {
-            location.reload();
-        }
-    });
-</script>
-</body> </html>
+        // Add keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
