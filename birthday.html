@@ -267,17 +267,22 @@
         .theme-royal-btn { background: linear-gradient(135deg, #6a5acd, #9370db); }
 
         /* Theme Background Icon */
-        .theme-bg {
-            position: absolute;
+       .theme-bg {
+            position: fixed;
             left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
             opacity: 0.1;
             z-index: -1;
             font-size: 150px;
             line-height: 1;
             animation: float 6s ease-in-out infinite;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
         }
+
 
         /* Animations */
         @keyframes fadeIn {
@@ -486,8 +491,13 @@
             themeIcon.textContent = randomWish.icon;
             themeIcon.className = 'theme-icon ' + randomWish.animation;
             
-            document.getElementById('themeBg').textContent = randomWish.bgIcon;
+            // Update theme background with vertical text
+            const themeBg = document.getElementById('themeBg');
+            themeBg.textContent = randomWish.bgIcon;
+            themeBg.style.writingMode = 'vertical-rl';
+            themeBg.style.textOrientation = 'mixed';
         }
+
 
         // Change color theme
         function changeTheme(theme) {
