@@ -1,6 +1,6 @@
 // Birthday data
 const birthdayData = {
-    name: "Alex", // Default name
+    name: "...", // Default name
     pic: "https://i.imgur.com/JQWUQfZ.jpg", // Default photo
     wishes: [
         {
