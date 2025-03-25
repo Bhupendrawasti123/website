@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            transition: all 0.5s ease;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        /* Theme styles */
+        .theme-sunset {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #333;
+        }
+        
+        .theme-ocean {
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            color: white;
+        }
+        
+        .theme-forest {
+            background: linear-gradient(to right, #56ab2f, #a8e063);
+            color: #113311;
+        }
+        
+        .theme-royal {
+            background: linear-gradient(to right, #614385, #516395);
+            color: gold;
+        }
+        
+        /* Form styles */
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 30px auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body id="theme-body">
+    <div class="container">
+        <div id="birthday-content">
+            <img id="profile-pic" class="profile-pic" src="" alt="Profile Picture">
+            <h1 id="birthday-name">Happy Birthday!</h1>
+            <p>Wishing you a wonderful day filled with joy and happiness!</p>
+        </div>
+        
+        <div class="form-container">
+            <h2>Create Your Birthday Page</h2>
+            <form id="birthday-form">
+                <input type="text" id="name-input" placeholder="Your Name" required>
+                <input type="url" id="pic-input" placeholder="Picture URL" required>
+                <select id="theme-select" required>
+                    <option value="">Choose a theme</option>
+                    <option value="theme-sunset">Sunset</option>
+                    <option value="theme-ocean">Ocean</option>
+                    <option value="theme-forest">Forest</option>
+                    <option value="theme-royal">Royal</option>
+                </select>
+                <button type="submit">Generate Birthday Page</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(window.location.search);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+        
+        // Function to apply the theme and content from URL parameters
+        function applyUrlParameters() {
+            const name = getUrlParameter('name');
+            const pic = getUrlParameter('pic');
+            const theme = getUrlParameter('theme');
+            
+            if (name) {
+                document.getElementById('birthday-name').textContent = `Happy Birthday, ${name}!`;
+                document.getElementById('name-input').value = name;
+            }
+            
+            if (pic) {
+                document.getElementById('profile-pic').src = pic;
+                document.getElementById('pic-input').value = pic;
+            }
+            
+            if (theme) {
+                document.getElementById('theme-body').className = theme;
+                document.getElementById('theme-select').value = theme;
+                // Hide the form if all parameters are present
+                if (name && pic && theme) {
+                    document.querySelector('.form-container').style.display = 'none';
+                }
+            }
+        }
+        
+        // Handle form submission
+        document.getElementById('birthday-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name-input').value;
+            const pic = document.getElementById('pic-input').value;
+            const theme = document.getElementById('theme-select').value;
+            
+            // Update the page with the form values
+            document.getElementById('birthday-name').textContent = `Happy Birthday, ${name}!`;
+            document.getElementById('profile-pic').src = pic;
+            document.getElementById('theme-body').className = theme;
+            
+            // Update the URL without reloading
+            const newUrl = `birthday.html?name=${encodeURIComponent(name)}&pic=${encodeURIComponent(pic)}&theme=${theme}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            
+            // Hide the form after submission
+            document.querySelector('.form-container').style.display = 'none';
+        });
+        
+        // Apply URL parameters when page loads
+        window.addEventListener('load', applyUrlParameters);
+    </script>
+</body>
+</html>
